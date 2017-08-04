@@ -115,9 +115,9 @@ export class SpikeActivityView extends Component {
             cureenTimeIndex: offsetX / ScreenWidth,
         })
 
-        this.previousIndex = this.state.cureenTimeIndex.toFixed(0);
-
+    
         if (this.ifStopMove || (Platform.OS == 'android' && this.ifOnCureenTime == false)) {
+             this.previousIndex = this.state.cureenTimeIndex.toFixed(0);
             if (this.previousIndex <= this.currLength) {
                 this.refs.topTimeListView.scrollTo({ x: 0, y: 0, animated: true })
                 this.setState({

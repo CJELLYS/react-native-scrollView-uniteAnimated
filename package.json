@@ -1,6 +1,6 @@
 {
   "name": "react-native-scrollview-unieanimated",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React-Native ListView unite ScrollView ,Support iOS Android",
   "main": "spikeActivityView.js",
   "scripts": {
@@ -12,7 +12,10 @@
   },
   "keywords": [
     "scrollview",
-    "animated"
+    "animated",
+    "react-native-scrollview",
+    "react-native-scrollview-unieanimated",
+    "react-native"
   ],
   "author": "Jelly",
   "license": "ISC",

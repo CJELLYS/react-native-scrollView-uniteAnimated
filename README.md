@@ -1,7 +1,7 @@
 # react-native-scrollView-uniteAnimated
 React-Native ListView unite ScrollView ,Support iOS Android
 
-##github
+## github
 [https://github.com/CJELLYS/react-native-scrollView-uniteAnimated.git](https://github.com/CJELLYS/react-native-scrollView-uniteAnimated.git)
 
 ```
@@ -12,7 +12,7 @@ npm install react-native-scrollView-uniteAnimated --save
 ![image](https://github.com/CJELLYS/image/blob/master/ios.gif?raw=true)
 ![image](https://github.com/CJELLYS/image/blob/master/android.gif?raw=true)
 
-##use
+## use
 ```
 import {SpikeActivityView}  from "react-native-scrollview-unieanimated"
 
@@ -33,7 +33,7 @@ import {SpikeActivityView}  from "react-native-scrollview-unieanimated"
         )
     }
 ```
-##DefaultProps
+## DefaultProps
 ```
 SpikeActivityView.defaultProps = {
     itemsTopArray:  [],//topListView dataSource
