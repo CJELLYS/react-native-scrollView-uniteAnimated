@@ -4,11 +4,16 @@ React-Native ListView unite ScrollView ,Support iOS Android
 ##github
 [https://github.com/CJELLYS/react-native-scrollView-uniteAnimated.git](https://github.com/CJELLYS/react-native-scrollView-uniteAnimated.git)
 
+```
+npm install react-native-scrollView-uniteAnimated --save
+
+```
+
 ![image](ios.gif?raw=true)
 
 ##use
 ```
-import SpikeActivityView  from "react-native-scrollView-uniteAnimated"
+import {SpikeActivityView}  from "react-native-scrollview-unieanimated"
 
   render() {
         return (<View>
