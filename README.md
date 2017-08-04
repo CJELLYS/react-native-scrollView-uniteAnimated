@@ -10,6 +10,7 @@ npm install react-native-scrollView-uniteAnimated --save
 ```
 
 ![image](ios.gif?raw=true)
+![image](android.gif?raw=true)
 
 ##use
 ```
