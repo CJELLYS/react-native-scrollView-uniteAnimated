@@ -15,7 +15,25 @@ npm install react-native-scrollview-uniteanimated --save
 ## use
 ```
 import {SpikeActivityView}  from "react-native-scrollview-unieanimated"
-
+  
+ subScrollView(){
+        let ary = [];
+        for (var i = 0; i < this.timeAry.length; i++) {
+            if (i % 2 == 0) {
+                ary.push(<View style={{ backgroundColor: 'rgb(30,130,100)', width: ScreenWidth, height: ScreenHeight - 60 }}>
+                </View>)
+            } else {
+                ary.push(<View style={{ backgroundColor: 'rgb(230,100,150)', width: ScreenWidth, height: ScreenHeight - 60 }}>
+                </View>)
+            }
+        }
+        return ary;
+    }
+   
+ onCureenTimeProps(index){
+        console.log("====>>>>",index);
+    }
+  
   render() {
         return (<View>
             <NavigatorView
@@ -25,10 +43,15 @@ import {SpikeActivityView}  from "react-native-scrollview-unieanimated"
                 rightView={this.editView.bind(this)}
             />
             <SpikeActivityView 
-             itemsTopArray = {this.props.itemsTopArray} 
-             onCureenTimeProps = {this.onCureenTime.bind(this)} 
-             scrollViewSubView = {this.scrollViewSubView()} 
-             topListViewStyle={{}}/>
+                    fatherViewBackgroundColor= {'#F0F0F0'}
+                    topViewStyle={{ backgroundColor: '#FC6345', height: 45, width: ScreenWidth }}
+                    moveIndexViewBackgroundColor={"white"}
+                    topViewTitleStyle= {{ color: 'white', fontSize: 12 }}
+                    scrollViewSubView={this.subScrollView()}
+                    onCureenTimeProps={(index)=>this.onCureenTimeProps(index)}
+                    moveIndexViewWidth={$n_px(50)}
+                    topTimeListViewCellWidth={$n_px(70)}
+                />
         </View>
         )
     }
