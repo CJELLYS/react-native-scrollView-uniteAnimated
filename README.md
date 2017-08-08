@@ -1,11 +1,11 @@
-# react-native-scrollView-uniteAnimated
+# react-native-scrollview-uniteanimated
 React-Native ListView unite ScrollView ,Support iOS Android
 
 ## github
 [https://github.com/CJELLYS/react-native-scrollView-uniteAnimated.git](https://github.com/CJELLYS/react-native-scrollView-uniteAnimated.git)
 
 ```
-npm install react-native-scrollView-uniteAnimated --save
+npm install react-native-scrollview-uniteanimated --save
 
 ```
 
