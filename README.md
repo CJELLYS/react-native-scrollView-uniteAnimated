@@ -59,12 +59,17 @@ import {SpikeActivityView}  from "react-native-scrollview-unieanimated"
 ## DefaultProps
 ```
 SpikeActivityView.defaultProps = {
-    itemsTopArray:  [],//topListView dataSource
-    onCureenTimeProps: function onCureenTimeProps() { },//topListView renderRow onPress function
-    scrollViewSubView: [],//scrollView SubView,The quantity is the itemsTopArray.length as above
-    topListViewStyle:{},
-    topCellStyle:{},
-    topCellTitleStyle:{},
+    itemsTopArray: [{ "title": "09:00", "subTitle": "已完毕" }, { "title": "11:00", "subTitle": "抢购中" }, { "title": "12:00", "subTitle": "抢购中" },
+    { "title": "13:00", "subTitle": "即将开始" }, { "title": "14:00", "subTitle": "即将开始" }, { "title": "15:00", "subTitle": "即将开始" },
+    { "title": "16:00", "subTitle": "即将开始" }, { "title": "17:00", "subTitle": "即将开始" }],
+    onCureenTimeProps: function onCureenTimeProps() { },
+    scrollViewSubView: [],
+    topViewStyle: { backgroundColor: '#FC6345', height: 45, width: ScreenWidth },
+    moveIndexViewBackgroundColor: "white",
+    moveIndexViewWidth: 50,
+    topTimeListViewCellWidth: 60,
+    topViewTitleStyle: { color: 'white', fontSize: 12 },
+    fatherViewBackgroundColor: '#F0F0F0' 
 };
 ```
 
