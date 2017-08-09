@@ -14,8 +14,10 @@ npm install react-native-scrollview-uniteanimated --save
 
 ## use
 ```
-import {SpikeActivityView}  from "react-native-scrollview-unieanimated"
-  
+import {SpikeActivityView}  from "react-native-scrollview-uniteanimated"
+var ScreenHeight = Dimensions.get('window').height;
+var ScreenWidth = Dimensions.get('window').width;
+
  subScrollView(){
         let ary = [];
         for (var i = 0; i < this.timeAry.length; i++) {
@@ -51,8 +53,8 @@ import {SpikeActivityView}  from "react-native-scrollview-unieanimated"
                     topViewTitleStyle= {{ color: 'white', fontSize: 12 }}
                     scrollViewSubView={this.subScrollView()}
                     onCureenTimeProps={(index)=>this.onCureenTimeProps(index)}
-                    moveIndexViewWidth={$n_px(50)}
-                    topTimeListViewCellWidth={$n_px(70)}
+                    moveIndexViewWidth={50}
+                    topTimeListViewCellWidth={70}
                 />
         </View>
         )
