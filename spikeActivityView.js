@@ -141,9 +141,9 @@ export class SpikeActivityView extends Component {
         this.startMovingX = event.nativeEvent.pageX;
         this.ifStopMove = false;
         if (this.previousIndex < this.currLength && Platform.OS == 'ios') {
-            this.setState({
-                moveXAnimated: (this.startTouchingX - this.startMovingX) * this.props.topTimeListViewCellWidth / ScreenWidth + this.previousIndex * this.props.topTimeListViewCellWidth
-            })
+            // this.setState({
+            //     moveXAnimated: (this.startTouchingX - this.startMovingX) * this.props.topTimeListViewCellWidth / ScreenWidth + this.previousIndex * this.props.topTimeListViewCellWidth
+            // })
         }
     }
 
@@ -153,11 +153,19 @@ export class SpikeActivityView extends Component {
 
     spikeActivityTimeCell(rowDate, sectionID, rowID) {
         return (<TouchableOpacity onPress={() => this.onCureenTime(rowDate, rowID)} activeOpacity={1}>
-            <View style={{ width: this.props.topTimeListViewCellWidth, height: this.props.topViewStyle.height, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={this.props.topViewTitleStyle}>{rowDate.title}</Text>
-                <Text style={[this.props.topViewTitleStyle, { marginTop: 3 }]}>{rowDate.subTitle}</Text>
+             <View style={{ width: this.props.topTimeListViewCellWidth, height: this.props.topViewStyle.height, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={this.state.cureenTimeIndex == Number(rowID) ?this.props.cureenTitleStyle : this.props.topViewTitleStyle}>{rowDate.title}</Text>
+                <Text style={[this.state.cureenTimeIndex == Number(rowID) ?this.props.cureenTitleStyle : this.props.topViewTitleStyle, {marginTop: 3}]}>{rowDate.subTitle}</Text>
             </View>
         </TouchableOpacity>)
+    }
+
+     needMoveLineView(){
+         if(this.props.needMoveLine == true){
+            return <Animated.View style={{ backgroundColor: this.props.moveIndexViewBackgroundColor, height: 2, width: this.props.moveIndexViewWidth, position: 'absolute', left: (this.props.topTimeListViewCellWidth - this.props.moveIndexViewWidth) / 2 + this.state.moveXAnimated, bottom: 0 }}
+             nLayout={(event) => this._onLayoutView(event)}
+            />
+         }
     }
 
     render() {
@@ -177,9 +185,8 @@ export class SpikeActivityView extends Component {
                     >
                     </ListView>
 
-                    <Animated.View style={{ backgroundColor: this.props.moveIndexViewBackgroundColor, height: 2, width: this.props.moveIndexViewWidth, position: 'absolute', left: (this.props.topTimeListViewCellWidth - this.props.moveIndexViewWidth) / 2 + this.state.moveXAnimated, bottom: 0 }}
-                        onLayout={(event) => this._onLayoutView(event)}
-                    />
+                  {this.needMoveLineView()}
+                  
                 </View>
                 <ScrollView ref={"scrollView"}
                     onLayout={(event) => this._onLayoutScrollView(event)}
@@ -211,7 +218,9 @@ SpikeActivityView.defaultProps = {
     moveIndexViewWidth: 50,
     topTimeListViewCellWidth: 60,
     topViewTitleStyle: { color: 'white', fontSize: 12 },
-    fatherViewBackgroundColor: '#F0F0F0' 
+    cureenTitleStyle:{ color: 'red', fontSize: 12 },
+    fatherViewBackgroundColor: '#F0F0F0',
+    needMoveLine:true
 };
 
 var styles = StyleSheet.create({

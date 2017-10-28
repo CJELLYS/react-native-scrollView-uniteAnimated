@@ -17,7 +17,13 @@ npm install react-native-scrollview-uniteanimated --save
 import {SpikeActivityView}  from "react-native-scrollview-uniteanimated"
 var ScreenHeight = Dimensions.get('window').height;
 var ScreenWidth = Dimensions.get('window').width;
-
+   
+   constructor(props) {
+    super(props);
+    this.timeAry =[{ "title": "08:00", "subTitle": "已完毕" }, { "title": "11:00", "subTitle": "抢购中" }, { "title": "12:00", "subTitle": "抢购中" },
+    { "title": "13:00", "subTitle": "即将开始" }, { "title": "14:00", "subTitle": "即将开始" }, { "title": "15:00", "subTitle": "即将开始" }, { "title": "16:00", "subTitle": "即将开始" }, { "title": "17:00", "subTitle": "即将开始" }]
+  } 
+   
  subScrollView(){
         let ary = [];
         for (var i = 0; i < this.timeAry.length; i++) {
@@ -45,8 +51,7 @@ var ScreenWidth = Dimensions.get('window').width;
                 rightView={this.editView.bind(this)}
             />
              <SpikeActivityView 
-                    itemsTopArray = {[{ "title": "08:00", "subTitle": "已完毕" }, { "title": "11:00", "subTitle": "抢购中" }, { "title": "12:00", "subTitle": "抢购中" },
-            { "title": "13:00", "subTitle": "即将开始" }, { "title": "14:00", "subTitle": "即将开始" }, { "title": "15:00", "subTitle": "即将开始" }, { "title": "16:00", "subTitle": "即将开始" }, { "title": "17:00", "subTitle": "即将开始" }]}
+                    itemsTopArray = {this.timeAry}
                     fatherViewBackgroundColor= {'#F0F0F0'}
                     topViewStyle={{ backgroundColor: '#FC6345', height: 45, width: ScreenWidth }}
                     moveIndexViewBackgroundColor={"white"}
@@ -60,6 +65,13 @@ var ScreenWidth = Dimensions.get('window').width;
         )
     }
 ```
+## method
+```
+
+
+```
+
+
 ## DefaultProps
 ```
 SpikeActivityView.defaultProps = {
@@ -73,7 +85,9 @@ SpikeActivityView.defaultProps = {
     moveIndexViewWidth: 50,
     topTimeListViewCellWidth: 60,
     topViewTitleStyle: { color: 'white', fontSize: 12 },
-    fatherViewBackgroundColor: '#F0F0F0' 
+    cureenTitleStyle:{ color: 'red', fontSize: 12 },
+    fatherViewBackgroundColor: '#F0F0F0',
+    needMoveLine:true
 };
 ```
 
