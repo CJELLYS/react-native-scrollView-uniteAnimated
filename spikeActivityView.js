@@ -5,11 +5,9 @@ import {
     Text,
     ListView,
     ScrollView,
-    Image,
     TouchableOpacity,
     Dimensions,
     InteractionManager,
-    Navigator,
     Platform,
     Animated
 } from 'react-native';
@@ -17,16 +15,13 @@ import {
 var ScreenHeight = Dimensions.get('window').height;
 var ScreenWidth = Dimensions.get('window').width;
 
-export class SpikeActivityView extends Component {
+export  default class SpikeActivityView extends Component {
     constructor(props) {
         super(props);
         this.moveMaxViewY = 0;
         this.scrollViewY = 0;//ScrollView layout.y
         this.moveViewX = 0;// Animated.View layout.x
         this.startTouchingX = 0,// 手指触摸点x相对屏幕的绝对位置(Finger touch point x relative to the absolute position of the screen)
-            this.startMovingX = 0,// 手指移动点x相对屏幕的绝对位置 (Finger move point x relative to screen absolute position)
-            this.ifStopMove = false;//手指是否离开ScrollView (Do your fingers leave ScrollView)
-        this.ifOnCureenTime = false;//是否点击了标题  (Did you click on the title)
         this.previousIndex = 0;//前一个下标 (Previous subscript)
         this.ifNeedMoveView = false;//是否需要移动view(Do you need to move View)
         this.state = {
@@ -55,10 +50,8 @@ export class SpikeActivityView extends Component {
 
     }
 
-    onCureenTime(rowDate, rowID) {
+    onCureenTime(rowID) {
         this.ifNeedMoveView = false;
-        this.ifStopMove = false;
-        this.ifOnCureenTime = true;
         this.setState({
             cureenTimeIndex: Number(rowID),
         })
@@ -91,8 +84,17 @@ export class SpikeActivityView extends Component {
     }
 
     onScrollTopListView(event) {
-        let offsetX = event.nativeEvent.contentOffset.x;
         if (this.ifNeedMoveView) {
+            let offsetX = event.nativeEvent.contentOffset.x;
+            this.setState({
+                moveXAnimated: -offsetX + this.state.cureenTimeIndex * this.props.topTimeListViewCellWidth
+            })
+        }
+    }
+
+    onScrollTopListEnd(event){
+        if(!this.ifNeedMoveView){
+            let offsetX = event.nativeEvent.contentOffset.x;
             this.setState({
                 moveXAnimated: -offsetX + this.state.cureenTimeIndex * this.props.topTimeListViewCellWidth
             })
@@ -103,74 +105,57 @@ export class SpikeActivityView extends Component {
         this.ifNeedMoveView = true;
     }
 
-    onScroll(event) {
-        this.ifNeedMoveView = false;
-        let offsetX = event.nativeEvent.contentOffset.x;
-
-        this.setState({
-            cureenTimeIndex: offsetX / ScreenWidth,
-        })
-
-
-        if (this.ifStopMove || (Platform.OS == 'android' && this.ifOnCureenTime == false)) {
-            this.previousIndex = this.state.cureenTimeIndex.toFixed(0);
-            if (this.previousIndex <= this.currLength) {
-                this.refs.topTimeListView.scrollTo({ x: 0, y: 0, animated: true })
-                this.setState({
-                    moveXAnimated: this.previousIndex * this.props.topTimeListViewCellWidth
-                })
-            } else {
-                this.refs.topTimeListView.scrollTo({ x: this.props.topTimeListViewCellWidth * (this.previousIndex - this.currLength), y: 0, animated: true })
-                if (this.moveViewX != this.currLength * this.props.topTimeListViewCellWidth) {
-                    this.setState({
-                        moveXAnimated: this.currLength * this.props.topTimeListViewCellWidth
-                    })
-                }
-            }
-            this.props.onCureenTimeProps(this.state.cureenTimeIndex);
-        }
-    }
-
+   
     _onTouchStart(event) {//开始触摸
-        this.ifStopMove = false;
-        this.ifOnCureenTime = false;
         this.startTouchingX = event.nativeEvent.pageX;
     }
 
-    onTouchMove(event) {//开始移动
-        this.startMovingX = event.nativeEvent.pageX;
-        this.ifStopMove = false;
-        if (this.previousIndex < this.currLength && Platform.OS == 'ios') {
-            // this.setState({
-            //     moveXAnimated: (this.startTouchingX - this.startMovingX) * this.props.topTimeListViewCellWidth / ScreenWidth + this.previousIndex * this.props.topTimeListViewCellWidth
-            // })
-        }
-    }
-
+   
     _onTouchEnd(event) {//移动结束
-        this.ifStopMove = true;
+        let offsetX = event.nativeEvent.contentOffset.x;
+        let cureenTimeIndex = offsetX / ScreenWidth;
+        this.setState({
+            cureenTimeIndex: cureenTimeIndex,
+        })
+        this.previousIndex = cureenTimeIndex;
+        if (this.previousIndex <= this.currLength) {
+            this.refs.topTimeListView.scrollTo({ x: 0, y: 0, animated: true })
+            this.setState({
+                moveXAnimated: this.previousIndex * this.props.topTimeListViewCellWidth
+            })
+        } else {
+            this.refs.topTimeListView.scrollTo({ x: this.props.topTimeListViewCellWidth * (this.previousIndex - this.currLength), y: 0, animated: true })
+            if (this.moveViewX != this.currLength * this.props.topTimeListViewCellWidth) {
+                this.setState({
+                    moveXAnimated: this.currLength * this.props.topTimeListViewCellWidth
+                })
+            }
+        }
+        this.props.onCureenTimeProps(cureenTimeIndex);
     }
 
     spikeActivityTimeCell(rowDate, sectionID, rowID) {
-        return (<TouchableOpacity onPress={() => this.onCureenTime(rowDate, rowID)} activeOpacity={1}>
-             <View style={{ width: this.props.topTimeListViewCellWidth, height: this.props.topViewStyle.height, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={this.state.cureenTimeIndex == Number(rowID) ?this.props.cureenTitleStyle : this.props.topViewTitleStyle}>{rowDate.title}</Text>
-                <Text style={[this.state.cureenTimeIndex == Number(rowID) ?this.props.cureenTitleStyle : this.props.topViewTitleStyle, {marginTop: 3}]}>{rowDate.subTitle}</Text>
-            </View>
-        </TouchableOpacity>)
+        return (
+            <TouchableOpacity onPress={() => this.onCureenTime(rowID)} activeOpacity={1} key={rowID}>
+                <View style={{ width: this.props.topTimeListViewCellWidth, height: this.props.topViewStyle.height, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={this.state.cureenTimeIndex == Number(rowID) ? this.props.cureenTitleStyle : this.props.topViewTitleStyle}>{rowDate.title}</Text>
+                    <Text style={[this.state.cureenTimeIndex == Number(rowID) ? this.props.cureenTitleStyle : this.props.topViewTitleStyle, { marginTop: 3 }]}>{rowDate.subTitle}</Text>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
-     needMoveLineView(){
-         if(this.props.needMoveLine == true){
+    needMoveLineView() {
+        if (this.props.needMoveLine == true) {
             return <Animated.View style={{ backgroundColor: this.props.moveIndexViewBackgroundColor, height: 2, width: this.props.moveIndexViewWidth, position: 'absolute', left: (this.props.topTimeListViewCellWidth - this.props.moveIndexViewWidth) / 2 + this.state.moveXAnimated, bottom: 0 }}
-             nLayout={(event) => this._onLayoutView(event)}
+                nLayout={(event) => this._onLayoutView(event)}
             />
-         }
+        }
     }
 
     render() {
         return (
-            <View style={[{ flex: 1, flexDirection: 'column', backgroundColor: this.props.fatherViewBackgroundColor}]} onLayout={(event) => this._onLayoutMaxView(event)}>
+            <View style={[{ flex: 1, flexDirection: 'column', backgroundColor: this.props.fatherViewBackgroundColor }]} onLayout={(event) => this._onLayoutMaxView(event)}>
                 <View style={this.props.topViewStyle}>
                     <ListView ref={"topTimeListView"}
                         dataSource={this.state.spikeActivityTimeList}
@@ -181,12 +166,11 @@ export class SpikeActivityView extends Component {
                         horizontal={true}
                         contentContainerStyle={{ height: this.props.topViewStyle.height }}
                         onScroll={(event) => this.onScrollTopListView(event)}
+                        onMomentumScrollEnd={(event) => this.onScrollTopListEnd(event)}
                         onTouchStart={(event) => this._onTouchStartListView(event)}
                     >
                     </ListView>
-
-                  {this.needMoveLineView()}
-                  
+                    {this.needMoveLineView()}
                 </View>
                 <ScrollView ref={"scrollView"}
                     onLayout={(event) => this._onLayoutScrollView(event)}
@@ -194,10 +178,8 @@ export class SpikeActivityView extends Component {
                     horizontal={true}
                     pagingEnabled={true}
                     showsHorizontalScrollIndicator={false}
-                    onScroll={(event) => this.onScroll(event)}
-                    onTouchEnd={(event) => this._onTouchEnd(event)}
-                    onTouchStart={(event) => this._onTouchStart(event)}
-                    onTouchMove={(event) => this.onTouchMove(event)}
+                    onMomentumScrollEnd={(event) => this._onTouchEnd(event)}
+                    onMomentumScrollStart={(event) => this._onTouchStart(event)}
                     scrollEventThrottle={Platform.OS == 'ios' ? 50 : 16}
                 >
                     {this.props.scrollViewSubView}
@@ -218,9 +200,9 @@ SpikeActivityView.defaultProps = {
     moveIndexViewWidth: 50,
     topTimeListViewCellWidth: 60,
     topViewTitleStyle: { color: 'white', fontSize: 12 },
-    cureenTitleStyle:{ color: 'red', fontSize: 12 },
+    cureenTitleStyle: { color: 'red', fontSize: 12 },
     fatherViewBackgroundColor: '#F0F0F0',
-    needMoveLine:true
+    needMoveLine: true
 };
 
 var styles = StyleSheet.create({

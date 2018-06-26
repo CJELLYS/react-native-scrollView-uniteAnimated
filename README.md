@@ -14,7 +14,7 @@ npm install react-native-scrollview-uniteanimated --save
 
 ## use
 ```
-import {SpikeActivityView}  from "react-native-scrollview-uniteanimated"
+import SpikeActivityView  from "react-native-scrollview-uniteanimated"
 var ScreenHeight = Dimensions.get('window').height;
 var ScreenWidth = Dimensions.get('window').width;
    
@@ -24,44 +24,42 @@ var ScreenWidth = Dimensions.get('window').width;
     { "title": "13:00", "subTitle": "即将开始" }, { "title": "14:00", "subTitle": "即将开始" }, { "title": "15:00", "subTitle": "即将开始" }, { "title": "16:00", "subTitle": "即将开始" }, { "title": "17:00", "subTitle": "即将开始" }]
   } 
    
- subScrollView(){
-        let ary = [];
-        for (var i = 0; i < this.timeAry.length; i++) {
-            if (i % 2 == 0) {
-                ary.push(<View style={{ backgroundColor: 'rgb(30,130,100)', width: ScreenWidth, height: ScreenHeight - 60 }}>
-                </View>)
-            } else {
-                ary.push(<View style={{ backgroundColor: 'rgb(230,100,150)', width: ScreenWidth, height: ScreenHeight - 60 }}>
-                </View>)
-            }
-        }
-        return ary;
+subScrollView() {
+    let ary = [];
+    for (var i = 0; i < this.timeAry.length; i++) {
+      if (i % 2 == 0) {
+        ary.push(
+        <View  key={i} style={{ backgroundColor: 'red', flex:1 }}>
+        </View>)
+      } else {
+        ary.push(
+        <View key={i} style={{ backgroundColor: 'rgb(230,100,150)', flex:1}}>
+        </View>
+        )
+      }
     }
-   
- onCureenTimeProps(index){
-        console.log("====>>>>",index);
-    }
+    return ary;
+  }
+
+  onCureenTimeProps(index) {
+    console.log("===index=>>>>", index);
+  }
   
   render() {
-        return (<View>
-            <NavigatorView
-                navigatorTitle='限时秒杀'
-                gradient={true}
-                pressBack={this._pressBack.bind(this)}
-                rightView={this.editView.bind(this)}
-            />
-             <SpikeActivityView 
-                    itemsTopArray = {this.timeAry}
-                    fatherViewBackgroundColor= {'#F0F0F0'}
-                    topViewStyle={{ backgroundColor: '#FC6345', height: 45, width: ScreenWidth }}
-                    moveIndexViewBackgroundColor={"white"}
-                    topViewTitleStyle= {{ color: 'white', fontSize: 12 }}
-                    scrollViewSubView={this.subScrollView()}
-                    onCureenTimeProps={(index)=>this.onCureenTimeProps(index)}
-                    moveIndexViewWidth={50}
-                    topTimeListViewCellWidth={70}
-                />
-        </View>
+        return (
+             <View style={{flex:1}}>
+        <SpikeActivityView
+          itemsTopArray={this.timeAry}
+          fatherViewBackgroundColor={'#F0F0F0'}
+          topViewStyle={{ backgroundColor: '#FC6345', height: 45, width: ScreenWidth }}
+          moveIndexViewBackgroundColor={"white"}
+          topViewTitleStyle={{ color: 'white', fontSize: 12 }}
+          scrollViewSubView={this.subScrollView()}
+          onCureenTimeProps={(index) => this.onCureenTimeProps(index)}
+          moveIndexViewWidth={50}
+          topTimeListViewCellWidth={70}
+        />
+      </View>
         )
     }
 ```
